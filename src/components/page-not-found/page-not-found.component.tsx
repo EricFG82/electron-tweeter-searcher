@@ -1,3 +1,11 @@
+/**
+ * Component to show a message that page is not found.
+ * 
+ * It is made up of the following html tags and components:
+ *      - Html tag "p": to show the error message.
+ *      - "Button": a button to go to the home page.
+ */
+
 import { Button } from 'primereact/button';
 import React, { ReactElement } from 'react';
 import './page-not-found.component.scss';

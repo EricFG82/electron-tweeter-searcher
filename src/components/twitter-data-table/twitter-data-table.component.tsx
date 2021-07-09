@@ -1,3 +1,12 @@
+/**
+ * Data table component to show the results of a search.
+ * 
+ * Used on the main component "TwitterSearcher".
+ * 
+ * It is made up of the following components:
+ *      - "DataTable": data table to display the list of results (tweets) of a performed search. 
+ */
+
 import React, { ReactElement } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { StatusDTO, TWITTER_REST_DATE_FORMAT } from '../../models/twitter.model';
@@ -16,6 +25,7 @@ interface TwitterDataTableState {
     rowsPerPage: number;
 }
 
+// Constants of the component
 const DISPLAY_DATE_FORMAT = 'YYYY-MM-DD hh:mm:ss';
 
 export class TwitterDataTable extends React.Component<TwitterDataTableProps, TwitterDataTableState> {

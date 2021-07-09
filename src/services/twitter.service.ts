@@ -1,3 +1,9 @@
+/**
+ * Twitter service
+ * 
+ * Used to call Twitter REST API.
+ */
+
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { OAuth2TokenRespDTO, SearchTweetsRespDTO } from '../models/twitter.model';
 import { StorageService } from './storage.service';

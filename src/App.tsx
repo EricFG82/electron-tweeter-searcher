@@ -1,3 +1,11 @@
+/**
+ * Main application component
+ * 
+ * Taking in mind that this application will evolve 
+ * in the future, this component is prepared for that 
+ * by using a routing mechanism. 
+ */
+
 import React, { ReactElement } from 'react';
 import { Switch, Route, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import { TwitterSearcher } from './components/twitter-searcher/twitter-searcher.component';

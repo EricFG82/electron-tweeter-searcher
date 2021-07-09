@@ -1,3 +1,9 @@
+/**
+ * Storage service
+ * 
+ * Used to store data of the app.
+ */
+
 // TODO: save/load data using a better way (instead of localStorage)
 export class StorageService {
 

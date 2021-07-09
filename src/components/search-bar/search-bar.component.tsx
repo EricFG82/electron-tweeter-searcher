@@ -1,3 +1,15 @@
+/**
+ * Search toolbar component.
+ * 
+ * Used on the main component "TwitterSearcher".
+ * 
+ * It is made up of the following components:
+ *      - "InputText": an input text box to be able enter a text to search.
+ *      - "OverlayPanel": an overlay panel to show a list of the last 5 recent searches. 
+ *          User will be able to click over one of the items to perform a search.
+ *      - "Button": a button to start the search.
+ */
+
 import React, { ReactElement } from 'react';
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
@@ -26,6 +38,7 @@ interface RecentSearchStorage {
     search: string;
 }
 
+// Constants of the component
 const STORAGE_RECENT_SEARCHES_KEY = 'TWITTER_RECENT_SEARCHES';
 
 export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {

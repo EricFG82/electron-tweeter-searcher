@@ -1,4 +1,14 @@
+/**
+ * Main component to search tweets and show the results.
+ * 
+ * It is made up of the following components:
+ *      - "SearchBar": Toolbar to perform a search.
+ *      - "TwitterDataTable": Data table to show all results.
+ *      - "Toast": A message panel to show errors of the search.
+ */
+
 import React, { ReactElement } from 'react';
+import { Toast } from 'primereact/toast';
 import { SearchTweetsRespDTO } from '../../models/twitter.model';
 import { StorageService } from '../../services/storage.service';
 import { TwitterService } from '../../services/twitter.service';
@@ -6,7 +16,7 @@ import { SearchBar, SearchBarSearchClickEvent } from '../search-bar/search-bar.c
 import { TwitterDataTable } from '../twitter-data-table/twitter-data-table.component';
 import './twitter-searcher.component.scss';
 
-// Constants
+// Constants of the component
 const TOTAL_TWEETS_TO_SEARCH = 30;
 
 export interface TwitterSearcherProps {
@@ -23,6 +33,7 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
     private twitterService: TwitterService;
     private searchBarRef: React.RefObject<SearchBar>;
     private datatableRef: React.RefObject<TwitterDataTable>;
+    private toastRef: React.RefObject<Toast>;
 
     constructor (props: any) {
         super(props);
@@ -32,8 +43,9 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
 
         this.datatableRef = React.createRef<TwitterDataTable>();
         this.searchBarRef = React.createRef<SearchBar>();
+        this.toastRef = React.createRef<Toast>();
     }
-
+ 
     private onSearchClickEv = async (event: SearchBarSearchClickEvent) => {
         try {
             // Set states of child components (SearchBar and DataTable component)
@@ -47,13 +59,14 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
             this.searchBarRef.current?.setState({ loading: false });
             this.datatableRef.current?.setState({ loading: false, tweets: searchResp.statuses });
         } catch (error) {
-            console.error('Error: ', error); // TODO: show a message to the user
+            this.toastRef.current?.show({ severity:'error', summary: 'Error', detail: error, life: 3000 });
         }
     }
     
     render(): ReactElement {
         return (
             <div className="tweets-searcher">
+                <Toast ref={this.toastRef} />
                 <SearchBar storageService={this.storageService} onSearchClick={this.onSearchClickEv} ref={this.searchBarRef}></SearchBar>
                 <TwitterDataTable ref={this.datatableRef}></TwitterDataTable>
             </div>
