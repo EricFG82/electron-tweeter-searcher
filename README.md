@@ -1,6 +1,12 @@
 # Tweets searcher application
 Example of an Electron application to search tweets.
 
+Project is done using following technologies: 
+* [Nodejs](https://nodejs.org/) 
+* [React](https://reactjs.org/)
+* [Electron](https://www.electronjs.org/)
+* [Parcel](https://parceljs.org/)
+
 ## Usage of the application
 The application allows you to do general searches or search for content of an specific user.
 
@@ -16,12 +22,6 @@ windows                    | Performs a general search using the keyword "window
 The last 5 recent searches are saved to be used as a bookmark:
 
 ![GitHub Logo](docs/screenshots/search-recent-screenshot.png)
-
-Project is done using following technologies: 
-* [Nodejs](https://nodejs.org/) 
-* [React](https://reactjs.org/)
-* [Electron](https://www.electronjs.org/)
-* [Parcel](https://parceljs.org/)
 
 ## Install prerequisites
 - Install node.js: download and install setup from [node.js](https://nodejs.org/en/download/)
