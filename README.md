@@ -1,7 +1,21 @@
 # Tweets searcher application
 Example of an Electron application to search tweets.
 
+## Usage of the application
+The application allows you to do general searches or search for content by a specific user.
+
 ![GitHub Logo](docs/screenshots/search-screenshot.png)
+
+Example of searches:
+Search value               | Description
+-------------------------- | -------
+windows                    | Performs a general search using the keyword "windows".
+@billgates				   | Search tweets of user "billgates".
+@billgates research        | Search tweets of user "billgates" containing the keyword "research".
+
+The last 5 recent searches are saved to be used as a bookmark:
+
+![GitHub Logo](docs/screenshots/search-recent-screenshot.png)
 
 Project is done using following technologies: 
 * [Nodejs](https://nodejs.org/) 

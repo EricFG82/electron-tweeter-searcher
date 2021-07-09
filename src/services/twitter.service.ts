@@ -44,7 +44,7 @@ export class TwitterService {
                 params: {
                     'grant_type': 'client_credentials' // Only client_credentials is allowed
                 },
-                auth: { //
+                auth: { // Authorization Basic
                     username: apiKey,
                     password: apiSecretKey
                 }
@@ -118,7 +118,6 @@ export class TwitterService {
                 resolve(resp.data);
 
             } catch (error: any) {
-                console.log('Error: ', error);
                 reject(error);
             }
         });
