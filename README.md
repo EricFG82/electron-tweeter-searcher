@@ -54,3 +54,16 @@ Path                       | Description
 /src/models                | Here are the source files to define the data Transfer Objects (DTO).
 /src/services              | Here are the source files to define the services.
 /dist                      | Here are the compiled files prepared for distribution.
+
+## Twitter consumer key
+This application requires consumer keys to be able to use the Twitter REST API. 
+This key is like your username. It is used to verify who you are to Twitter. 
+
+The consumer keys are composed of two keys:
+* API Key
+* API Secret Key
+
+If you want to generate your own keys, you will need to be registered on the [Twitter Developer portal](https://developer.twitter.com/en/portal/projects-and-apps)
+and then create a Twitter application before. See more information [here](https://developer.twitter.com/en/docs/apps/overview) 
+
+You are free to change the predefined keys of this code by changing constants "API_KEY" and "API_SECRET_KEY" of the file ```/src/services/twitter.service.ts```
