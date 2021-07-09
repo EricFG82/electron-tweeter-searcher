@@ -1,6 +1,8 @@
 # Tweets searcher application
 Example of an Electron application to search tweets.
 
+![GitHub Logo](docs/screenshots/search-screenshot.png)
+
 Project is done using following technologies: 
 * [Nodejs](https://nodejs.org/) 
 * [React](https://reactjs.org/)
