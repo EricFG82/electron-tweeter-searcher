@@ -42,6 +42,44 @@ export class TwitterDataTable extends React.Component<TwitterDataTableProps, Twi
     private onImageLoadError = (event: any): void => {
         event.target.src='';
     }
+
+    private makeUrlClickables(text: string): string {
+        return (text || '').replace(
+            /([^\S]|^)(((https?\:\/\/)|(www\.))(\S+))/gi,
+            (match: string, space: string, url: string) => {
+                let hyperlink = url;
+                if (!hyperlink.match('^https?:\/\/')) {
+                    hyperlink = 'http://' + hyperlink;
+                }
+                return space + `<a href="${hyperlink}" style="color: rgb(27, 149, 224)" target="_blank">${url}</a>`;
+            }
+        );
+    }
+
+    private stylizeHastags(text: string): string {
+        return (text || '').replace(
+            /(?<=[\s>]|^)#(\w*[A-Za-z_]+\w*)\b(?!;)/gi,
+            (match: string) => {
+                return `<span style="font-style: italic">${match}</span>`;
+            }
+        );
+    }
+
+    private stylizeUsers(text: string): string {
+        return (text || '').replace(
+            /(?<=[\s>]|^)@(\w*[A-Za-z_]+\w*)\b(?!;)/gi,
+            (match: string) => {
+                return `<span style="color: rgb(83, 100, 113); font-weight: bold">${match}</span>`;
+            }
+        );
+    }
+
+    private stylizeTweetText(text: string): string {
+        let htmlTxt: string = this.makeUrlClickables(text);
+        htmlTxt = this.stylizeHastags(htmlTxt);
+        htmlTxt = this.stylizeUsers(htmlTxt);
+        return htmlTxt;
+    }
     
     render(): ReactElement {
         const { loading, tweets, rowsPerPage } = this.state;
@@ -54,17 +92,21 @@ export class TwitterDataTable extends React.Component<TwitterDataTableProps, Twi
             return <img src={rowData.user.profile_image_url} onError={this.onImageLoadError} />;
         }
 
+        const textBodyTemplate = (rowData: StatusDTO): ReactElement => {
+            return <p dangerouslySetInnerHTML={{__html: this.stylizeTweetText(rowData.text)}}></p>
+        }
+
         return (
             <div className="datatable-tweets">
                 <div className="card">
                     <DataTable loading={loading} value={tweets} emptyMessage="No tweets found" paginator={true}
                             paginatorPosition='top' paginatorTemplate="CurrentPageReport PrevPageLink NextPageLink"
-                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} first tweets" 
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} tweets" 
                             rows={rowsPerPage}>
                         <Column body={createdAtBodyTemplate} header="Created at"></Column>
                         <Column body={imageBodyTemplate} header="Image"></Column>
                         <Column field="user.name" header="Username"></Column>
-                        <Column field="text" header="Text"></Column>
+                        <Column body={textBodyTemplate} header="Text"></Column>
                     </DataTable>
                 </div>
             </div>
