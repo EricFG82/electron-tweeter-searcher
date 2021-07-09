@@ -36,14 +36,16 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
 
     private onSearchClickEv = async (event: SearchBarSearchClickEvent) => {
         try {
-            this.datatableRef.current?.setState({ loading: true });
+            // Set states of child components (SearchBar and DataTable component)
             this.searchBarRef.current?.setState({ loading: true });
+            this.datatableRef.current?.setState({ loading: true });
 
-            const token: string = await this.twitterService.getOAuth2BearerToken();
-            const searchResp: SearchTweetsRespDTO = await this.twitterService.searchTweets(token, event.searchValue, TOTAL_TWEETS_TO_SEARCH);
-            
-            this.datatableRef.current?.setState({ loading: false, tweets: searchResp.statuses });
+            // Search tweets by using the Twitter REST API
+            const searchResp: SearchTweetsRespDTO = await this.twitterService.searchTweets(event.searchValue, TOTAL_TWEETS_TO_SEARCH);
+
+            // Set states of child components (SearchBar and DataTable component)
             this.searchBarRef.current?.setState({ loading: false });
+            this.datatableRef.current?.setState({ loading: false, tweets: searchResp.statuses });
         } catch (error) {
             console.error('Error: ', error); // TODO: show a message to the user
         }

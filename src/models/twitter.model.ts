@@ -1,3 +1,5 @@
+export const TWITTER_REST_DATE_FORMAT = 'ddd MMM DD HH:mm:ss ZZ YYYY';
+
 export interface UserMentionDTO {
     screen_name: string;
     name: string;

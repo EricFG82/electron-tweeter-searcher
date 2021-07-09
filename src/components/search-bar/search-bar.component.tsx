@@ -3,7 +3,7 @@ import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
-import { ListBox } from 'primereact/listbox';
+import { ListBox, ListBoxChangeParams } from 'primereact/listbox';
 import { StorageService } from '../../services/storage.service';
 import './search-bar.component.scss';
 
@@ -43,7 +43,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     }
 
     private isSearchValueValid(searchValue: string): boolean {
-        return (!!searchValue && searchValue.trim() != '');
+        return (searchValue != null && searchValue.trim() != '');
     }
 
     private onSearchTextFocus = (event: React.FocusEvent<HTMLInputElement>): void => {
@@ -75,35 +75,38 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         this.storageService.set(STORAGE_RECENT_SEARCHES_KEY, recentSearches);
     }
 
-    private onSearchClickEv = (): void => {
+    private search(searchValue: string): void {
         const { onSearchClick } = this.props;
-        const { searchValue } = this.state;
         if (this.isSearchValueValid(searchValue)) {
             this.overtlayPanelRef.current?.hide();
             this.saveSearchValue(searchValue);
             if (onSearchClick) {
-                const { searchValue } = this.state;
                 onSearchClick({ searchValue: searchValue } as SearchBarSearchClickEvent);
             }
         }
     }
 
+    private onSearchClickEv = (): void => {
+        const { searchValue } = this.state;
+        this.search(searchValue);
+    }
+
     private onSearchKeyDownEv = (event: React.KeyboardEvent<HTMLInputElement>): void => {
         if (event.key == 'Enter') {
+            event.preventDefault();
             this.onSearchClickEv();
         }
     }
 
-    private onRecentSearchClick = (event: any): void => {
-        this.setState({ searchValue: event.value.search });
-        setTimeout(() => {
-            this.onSearchClickEv();
-        }, 0);
+    private onRecentSearchClick = (event: ListBoxChangeParams): void => {
+        const searchValue: string = event.value.search;
+        this.setState({ searchValue: searchValue }); 
+        this.search(searchValue);
     }
     
     render(): ReactElement {
         const { searchValue, loading, recentSearches } = this.state;
-        const leftContents = (
+        const leftContents: ReactElement = (
             <React.Fragment>
                 <i className="pi pi-twitter twitter-logo" style={{'fontSize': '40px', 'color': 'rgb(29, 161, 242)'}}></i>
                 <InputText autoFocus={true} disabled={loading} className="p-d-block" style={{'width': '300px'}}  placeholder="Search Twitter" 
@@ -112,10 +115,9 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                     onClick={this.onSearchClickEv} />
             </React.Fragment>
         );
-        const rightContents = (<React.Fragment></React.Fragment>);
         return (
             <div className="search-bar">
-                <Toolbar left={leftContents} right={rightContents} />
+                <Toolbar left={leftContents} />
                 <OverlayPanel ref={this.overtlayPanelRef} showCloseIcon={false} id="overlay_panel" style={{width: '450px'}} 
                     className="overlaypanel-recent-searches">
                     <b>Recent</b>
