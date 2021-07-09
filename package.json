@@ -1,0 +1,84 @@
+{
+  "name": "electron-tweeter-searcher",
+  "version": "0.1.0",
+  "author": {
+    "name": "Eric Follana Guijarro"
+  },
+  "private": true,
+  "main": "src/electron.js",
+  "homepage": "./",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "node-sass": "^6.0.1",
+    "primeicons": "^4.1.0",
+    "primereact": "^6.5.0-rc.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts-parcel": "0.0.38",
+    "react-transition-group": "^4.4.2"
+  },
+  "scripts": {
+    "standalone-start": "set PORT=3000 && react-scripts-parcel start",
+    "standalone-build": "react-scripts-parcel build",
+    "standalone-test": "react-scripts-parcel test --env=jsdom",
+    "standalone-eject": "react-scripts-parcel eject",
+    "react-start": "parcel -p 3000 ./public/index.html --out-dir dist",
+    "react-build": "parcel build ./public/index.html --out-dir dist --public-url ./",
+    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron . \"",
+    "electron-build": "electron-builder -mwl",
+    "build": "rimraf dist/* && concurrently 'npm:react-build' 'npm:electron-build'"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">1%",
+      "last 4 versions",
+      "Firefox ESR",
+      "not ie < 11"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-transform-react-jsx": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "@types/react": "^17.0.13",
+    "@types/react-router-dom": "^5.1.7",
+    "concurrently": "^6.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^13.1.6",
+    "electron-builder": "^22.11.7",
+    "electron-is-dev": "^2.0.0",
+    "parcel-bundler": "^1.12.5",
+    "rimraf": "^3.0.2",
+    "sass": "^1.35.1",
+    "typescript": "^4.3.5",
+    "wait-on": "^6.0.0"
+  },
+  "build": {
+    "appId": "efollana-electron-tweeter-searcher",
+    "files": [
+      "src/**/*",
+      "public/*",
+      "dist/**/*"
+    ],
+    "mac": {
+      "target": "dmg",
+      "icon": "src/logo.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "src/logo.png"
+    },
+    "linux": {
+      "target": "deb",
+      "icon": "src/logo.png",
+      "category": "Development"
+    }
+  }
+}
