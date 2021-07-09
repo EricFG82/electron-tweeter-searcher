@@ -45,15 +45,24 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
         this.searchBarRef = React.createRef<SearchBar>();
         this.toastRef = React.createRef<Toast>();
     }
+
+    private sanitizeSearch(searchValue: string): string {
+        if (searchValue) {
+            return searchValue.replace('@', 'from:');
+        }
+        return searchValue;
+    }
  
-    private onSearchClickEv = async (event: SearchBarSearchClickEvent) => {
+    private onSearchClickEv = async (event: SearchBarSearchClickEvent): Promise<any> => {
         try {
+            const searchValue: string = this.sanitizeSearch(event.searchValue);
+
             // Set states of child components (SearchBar and DataTable component)
             this.searchBarRef.current?.setState({ loading: true });
             this.datatableRef.current?.setState({ loading: true });
 
             // Search tweets by using the Twitter REST API
-            const searchResp: SearchTweetsRespDTO = await this.twitterService.searchTweets(event.searchValue, TOTAL_TWEETS_TO_SEARCH);
+            const searchResp: SearchTweetsRespDTO = await this.twitterService.searchTweets(searchValue, TOTAL_TWEETS_TO_SEARCH);
 
             // Set states of child components (SearchBar and DataTable component)
             this.searchBarRef.current?.setState({ loading: false });
