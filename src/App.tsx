@@ -11,8 +11,8 @@ import { Switch, Route, Redirect, RouteComponentProps, withRouter } from 'react-
 import { TwitterSearcher } from './components/twitter-searcher/twitter-searcher.component';
 import { PageNotFound } from './components/page-not-found/page-not-found.component';
 import { TwitterService } from './services/twitter.service';
-import './App.scss';
 import { StorageService } from './services/storage.service';
+import './App.scss';
 
 interface AppProps extends RouteComponentProps {
 }
