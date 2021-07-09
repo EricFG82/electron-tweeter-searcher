@@ -2,6 +2,10 @@
  * Twitter service
  * 
  * Used to call Twitter REST API.
+ * 
+ * Note: As the Axios client used for REST API calls returns responses of type AxiosResponse, 
+ * I have simplified the use of all the functions of this service by directly returning a promise 
+ * with the expected DTO object.
  */
 
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -19,11 +23,6 @@ const API_URL = `${CORS_BRIDGE_URL}/${TWITTER_API_URL}`;
 const API_KEY = 'jALa1ZUmUzPQsxTIHdnfno7B9';
 const API_SECRET_KEY = 'uRPzkM5QkKYZBTCRnH3zJhODaTJrG923L4ZNLnQDoq4zx1ZtxL';
 
-/** 
- * Note: As the Axios client used for REST API calls returns responses of type AxiosResponse, 
- * I have simplified the use of all the functions of this service by directly returning a promise 
- * with the expected DTO object.
-*/
 export class TwitterService {
 
     constructor(
