@@ -1,9 +1,9 @@
-# Tweets searcher Electron app
-Electron application to search tweets.
+# Tweets searcher application
+Example of an Electron application to search tweets.
 
 Project is done using following technologies: 
 * [Nodejs](https://nodejs.org/) 
-* [React](https://es.reactjs.org/)
+* [React](https://reactjs.org/)
 * [Electron](https://www.electronjs.org/)
 * [Parcel](https://parceljs.org/)
 
@@ -27,3 +27,14 @@ Project is done using following technologies:
 
 ### Package the project as a web page:
 * On the command line, run: ``` npm run standalone-build ```
+
+## Structure of the source code
+Path                       | Description
+-------------------------- | -------
+/                          | Root path. Here are the project configuration files.
+/public/                   | Public folder. Here are the public files such as index.html, favicon.ico.
+/src/                      | The main application source files are located here.
+/src/components            | Here are the source files to define the components.
+/src/models                | Here are the source files to define the data Transfer Objects (DTO).
+/src/services              | Here are the source files to define the services.
+/dist                      | Here are the compiled files prepared for distribution.
