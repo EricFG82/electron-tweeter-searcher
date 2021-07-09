@@ -2,7 +2,7 @@
 Example of an Electron application to search tweets.
 
 ## Usage of the application
-The application allows you to do general searches or search for content by a specific user.
+The application allows you to do general searches or search for content of an specific user.
 
 ![GitHub Logo](docs/screenshots/search-screenshot.png)
 
