@@ -94,9 +94,9 @@ export class TwitterService {
     /**
      * Function to search tweets using REST API.
      * 
-     * See documentation here: https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-all
+     * See documentation here: https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/api-reference/get-search-tweets
      * @param query
-     * @param maxResults
+     * @param count
      * @returns Promise<SearchAllResp>
      */ 
     searchTweets(query: string, count?: number): Promise<SearchTweetsRespDTO> {
@@ -113,14 +113,12 @@ export class TwitterService {
                         'Authorization': `Bearer ${bearerToken}`
                     }
                 };
-                axios.get<SearchTweetsRespDTO>(url, config).then(
-                    (resp: AxiosResponse<SearchTweetsRespDTO>) => {
-                        resolve(resp.data);
-                    }).catch((error: any) => {
-                        reject(error);
-                    }
-                );
+
+                const resp: AxiosResponse<SearchTweetsRespDTO> = await axios.get<SearchTweetsRespDTO>(url, config);
+                resolve(resp.data);
+
             } catch (error: any) {
+                console.log('Error: ', error);
                 reject(error);
             }
         });

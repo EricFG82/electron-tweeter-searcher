@@ -9,7 +9,7 @@
 
 import React, { ReactElement } from 'react';
 import { Toast } from 'primereact/toast';
-import { SearchTweetsRespDTO } from '../../models/twitter.model';
+import { SearchTweetsRespDTO, StatusDTO } from '../../models/twitter.model';
 import { StorageService } from '../../services/storage.service';
 import { TwitterService } from '../../services/twitter.service';
 import { SearchBar, SearchBarSearchClickEvent } from '../search-bar/search-bar.component';
@@ -54,6 +54,7 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
     }
  
     private onSearchClickEv = async (event: SearchBarSearchClickEvent): Promise<any> => {
+        let tweets: StatusDTO[] = [];
         try {
             const searchValue: string = this.sanitizeSearch(event.searchValue);
 
@@ -64,11 +65,14 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
             // Search tweets by using the Twitter REST API
             const searchResp: SearchTweetsRespDTO = await this.twitterService.searchTweets(searchValue, TOTAL_TWEETS_TO_SEARCH);
 
+            tweets = searchResp.statuses;
+
+        } catch (error: any) {
+            this.toastRef.current?.show({ severity:'error', summary: 'Error', detail: `${error}`, life: 3000 });
+        } finally {
             // Set states of child components (SearchBar and DataTable component)
             this.searchBarRef.current?.setState({ loading: false });
-            this.datatableRef.current?.setState({ loading: false, tweets: searchResp.statuses });
-        } catch (error) {
-            this.toastRef.current?.show({ severity:'error', summary: 'Error', detail: error, life: 3000 });
+            this.datatableRef.current?.setState({ loading: false, tweets: tweets });
         }
     }
     
