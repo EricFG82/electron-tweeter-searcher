@@ -20,8 +20,8 @@ const API_URL = `${CORS_BRIDGE_URL}/${TWITTER_API_URL}`;
 
 // Twitter Developer portal constants
 // Url: https://developer.twitter.com/en/portal/dashboard
-const API_KEY = 'jALa1ZUmUzPQsxTIHdnfno7B9';
-const API_SECRET_KEY = 'uRPzkM5QkKYZBTCRnH3zJhODaTJrG923L4ZNLnQDoq4zx1ZtxL';
+const API_KEY = process.env.TWITTER_API_KEY ?? 'NOAPIKEY';
+const API_SECRET_KEY = process.env.TWITTER_API_SECRET_KEY ?? 'NOAPISECRETKEY';
 
 export class TwitterService {
 
