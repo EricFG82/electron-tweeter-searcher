@@ -30,6 +30,21 @@ The last 5 recent searches are saved to be used as a bookmark:
 * Do a GIT clone or download this source code and extract all files to a local folder.
 * Open the command line, go to your directory previously created and run: ``` npm install ```
 
+## Twitter consumer key
+This application requires consumer keys to be able to use the Twitter REST API. 
+This key is like your username. It is used to verify who you are to Twitter. 
+
+The consumer keys are composed of two keys:
+* API Key
+* API Secret Key
+
+If you want to generate your own keys, you will need to be registered on the [Twitter Developer portal](https://developer.twitter.com/en/portal/projects-and-apps)
+and then create a Twitter application before. See more information [here](https://developer.twitter.com/en/docs/apps/overview) 
+
+You must create an .env file on the root path of the project and specify following environment variables:
+* TWITTER_API_KEY=**YOUR_API_KEY**
+* TWITTER_API_SECRET_KEY=**YOUR_API_SECRET_KEY**
+
 ## Start the application in development mode
 ### Start the project as an Electron application:
 * On the command line, run: ``` npm start ```
@@ -54,16 +69,3 @@ Path                       | Description
 /src/models                | Here are the source files to define the data Transfer Objects (DTO).
 /src/services              | Here are the source files to define the services.
 /dist                      | Here are the compiled files prepared for distribution.
-
-## Twitter consumer key
-This application requires consumer keys to be able to use the Twitter REST API. 
-This key is like your username. It is used to verify who you are to Twitter. 
-
-The consumer keys are composed of two keys:
-* API Key
-* API Secret Key
-
-If you want to generate your own keys, you will need to be registered on the [Twitter Developer portal](https://developer.twitter.com/en/portal/projects-and-apps)
-and then create a Twitter application before. See more information [here](https://developer.twitter.com/en/docs/apps/overview) 
-
-You are free to change the predefined keys of this code by changing constants "API_KEY" and "API_SECRET_KEY" of the file ```/src/services/twitter.service.ts```
