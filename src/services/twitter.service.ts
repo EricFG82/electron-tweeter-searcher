@@ -57,7 +57,7 @@ export class TwitterService {
                     return axiosInstance(error.response.config);
 
                 } catch (error2: any | AxiosError) {
-                    return Promise.reject(error);
+                    return Promise.reject(error2);
                 } finally {
                     this.createAxiosResponseUnauthorizedInterceptor(axiosInstance);
                 }
