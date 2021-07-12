@@ -34,7 +34,7 @@ export class TwitterService {
 
     // Axios interceptor for HTTP 401 Unauthorized
     // If the token is invalid or has expired, we regenerate a new token and then call the original REST again.
-    private createAxiosResponseUnauthorizedInterceptor(axiosInstance: AxiosInstance) {
+    private createAxiosResponseUnauthorizedInterceptor(axiosInstance: AxiosInstance): void {
         const interceptor: number = axiosInstance.interceptors.response.use(
             response => response,
             async (error: AxiosError) => {
@@ -44,8 +44,8 @@ export class TwitterService {
                 }
     
                 // When response code is HTTP 401 Unauthorized, try to refresh the token.
-                // Eject the interceptor so it doesn't loop in case
-                // token refresh causes the 401 response
+                // Eject the interceptor so it doesn't loop in case token refresh causes 
+                // the 401 response.
                 axiosInstance.interceptors.response.eject(interceptor);
 
                 try {

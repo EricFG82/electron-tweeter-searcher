@@ -92,6 +92,9 @@ export class TwitterDataTable extends React.Component<TwitterDataTableProps, Twi
             return <img src={rowData.user.profile_image_url} onError={this.onImageLoadError} />;
         }
 
+        // Done in that way so as to display the text of the tweet more beautiful but 
+        // it could be a security vulnerability. Someone could inject html/javascript 
+        // code into a tweet. 
         const textBodyTemplate = (rowData: StatusDTO): ReactElement => {
             return <p dangerouslySetInnerHTML={{__html: this.stylizeTweetText(rowData.text)}}></p>
         }
