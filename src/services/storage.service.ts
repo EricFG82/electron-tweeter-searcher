@@ -59,4 +59,13 @@ export class StorageService {
         return null;
     }
 
+    /**
+     * Function to remove data from the storage.
+     * 
+     * @param key
+     */ 
+    remove(key: string): void {
+        localStorage.removeItem(key);
+    }
+
 }
