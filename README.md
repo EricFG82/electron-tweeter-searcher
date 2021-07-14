@@ -69,3 +69,6 @@ Path                       | Description
 /src/models                | Here are the source files to define the data Transfer Objects (DTO).
 /src/services              | Here are the source files to define the services.
 /dist                      | Here are the compiled files prepared for distribution.
+
+## Common errors
+In case you get an "HTTP 403 Unauthorized" error when searching for tweets from the application, make sure the ``` .env ``` file exists and its content is correct. If this is not the case, add the file with the data, delete the cache folder ".cache" and run the command again. For example: ``` npm start ```. 
