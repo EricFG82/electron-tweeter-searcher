@@ -4,82 +4,85 @@
   "author": {
     "name": "Eric Follana Guijarro"
   },
-  "private": true,
-  "main": "src/electron.js",
-  "homepage": "./",
+  "main": "./dist/main.bundle.js",
+  "scripts": {
+    "start": "npm run build-dev && npm run start-electron",
+    "start-electron": "electron ./dist/main.bundle.js",
+    "build-dev": "rimraf dist && cross-env NODE_ENV=development webpack --progress --color",
+    "dev": "rimraf dist && cross-env NODE_ENV=development webpack --watch --progress --color",
+    "prod": "rimraf dist && cross-env NODE_ENV=production webpack --progress --color",
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register \"test/**/*.ts\"",
+    "build:win": "electron-builder build --win --x64",
+    "build:mac": "electron-builder build --mac --x64",
+    "build": "electron-builder -mwl"
+  },
+  "build": {
+    "appId": "com.devtography.electron_boilerplate",
+    "productName": "Electron+React+TypeScript Boilerplate",
+    "directories": {
+      "app": "./dist/",
+      "output": "./out/"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis",
+      "asar": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "buildVersion": "1"
+  },
   "dependencies": {
     "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "electron-store": "^8.0.0",
     "moment": "^2.29.1",
-    "node-sass": "^6.0.1",
     "primeicons": "^4.1.0",
     "primereact": "^6.5.0-rc.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts-parcel": "0.0.38",
     "react-transition-group": "^4.4.2"
   },
-  "scripts": {
-    "standalone-start": "set PORT=3000 && react-scripts-parcel start",
-    "standalone-build": "react-scripts-parcel build",
-    "standalone-test": "react-scripts-parcel test --env=jsdom",
-    "standalone-eject": "react-scripts-parcel eject",
-    "react-start": "parcel -p 3000 ./public/index.html --out-dir dist",
-    "react-build": "parcel build ./public/index.html --out-dir dist --public-url ./",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron . \"",
-    "electron-build": "electron-builder -mwl",
-    "build": "rimraf dist/* && concurrently 'npm:react-build' 'npm:electron-build'"
-  },
-  "browserslist": {
-    "development": [
-      "last 2 chrome versions",
-      "last 2 firefox versions",
-      "last 2 edge versions"
-    ],
-    "production": [
-      ">1%",
-      "last 4 versions",
-      "Firefox ESR",
-      "not ie < 11"
-    ]
-  },
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/plugin-transform-react-jsx": "^7.14.5",
-    "@babel/preset-env": "^7.14.7",
-    "@babel/preset-react": "^7.14.5",
-    "@types/react": "^17.0.13",
-    "@types/react-router-dom": "^5.1.7",
-    "concurrently": "^6.2.0",
+    "@types/mocha": "^8.2.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-router": "^5.1.8",
+    "@types/react-router-dom": "^5.1.6",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
+    "copy-webpack-plugin": "^7.0.0",
     "cross-env": "^7.0.3",
-    "electron": "^13.1.6",
-    "electron-builder": "^22.11.7",
-    "electron-is-dev": "^2.0.0",
-    "parcel-bundler": "^1.12.5",
+    "css-loader": "^5.0.1",
+    "electron": "^11.1.1",
+    "electron-builder": "^22.9.1",
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^4.5.0",
+    "lodash": "^4.17.20",
+    "mocha": "^8.2.1",
     "rimraf": "^3.0.2",
-    "sass": "^1.35.1",
-    "typescript": "^4.3.5",
-    "wait-on": "^6.0.0"
-  },
-  "build": {
-    "appId": "efollana-electron-tweeter-searcher",
-    "files": [
-      "src/**/*",
-      "public/*",
-      "dist/**/*"
-    ],
-    "mac": {
-      "target": "dmg",
-      "icon": "src/logo.png"
-    },
-    "win": {
-      "target": "nsis",
-      "icon": "src/logo.png"
-    },
-    "linux": {
-      "target": "deb",
-      "icon": "src/logo.png",
-      "category": "Development"
-    }
+    "source-map-loader": "^2.0.0",
+    "spectron": "^13.0.0",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.12",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.1.3",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.3.0",
+    "webpack-dotenv-plugin": "^2.1.0"
   }
 }

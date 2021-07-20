@@ -10,21 +10,23 @@
  *      - "Button": a button to start the search.
  */
 
-import React, { ReactElement } from 'react';
+import * as React from 'react';
+import { ReactElement } from 'react';
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { ListBox, ListBoxChangeParams } from 'primereact/listbox';
-import { StorageService } from '../../services/storage.service';
 import './search-bar.component.scss';
+import { ApiService } from '_/renderer/services/api.service';
+import { Toast } from 'primereact/toast';
 
 export interface SearchBarSearchClickEvent extends Event {
     searchValue: string; 
 }
 
 export interface SearchBarProps {
-    storageService: StorageService;
+    apiService: ApiService;
     onSearchClick?: (event: SearchBarSearchClickEvent) => void;
 }
 
@@ -43,16 +45,33 @@ const STORAGE_RECENT_SEARCHES_KEY = 'TWITTER_RECENT_SEARCHES';
 
 export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
-    private storageService: StorageService;
+    private apiService: ApiService;
     private overtlayPanelRef: React.RefObject<OverlayPanel>;
+    private toastRef: React.RefObject<Toast>;
 
     constructor (props: any) {
         super(props);
 
-        this.storageService = this.props.storageService;
+        this.apiService = props.apiService;
         this.overtlayPanelRef = React.createRef<OverlayPanel>();
+        this.toastRef = React.createRef<Toast>();
 
-        this.state = { searchValue: '', loading: false, recentSearches: this.loadRecentSearches() };
+        this.state = { searchValue: '', loading: false, recentSearches: [] };
+    }
+
+    async componentDidMount() {
+        try {
+            let data: RecentSearchStorage[] = await this.loadRecentSearches();
+
+            data = (data ? data : []);
+            if (typeof data == 'string') {
+                data = JSON.parse(data);
+            }
+            this.setState({ recentSearches: data });
+
+        } catch (error: any) {
+            this.displayError(error);
+        }
     }
 
     private isSearchValueValid(searchValue: string): boolean {
@@ -74,9 +93,8 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         }
     }
 
-    private loadRecentSearches(): RecentSearchStorage[] {
-        const data: RecentSearchStorage[] = this.storageService.getAsObj(STORAGE_RECENT_SEARCHES_KEY);
-        return (data ? data : []);
+    private async loadRecentSearches(): Promise<RecentSearchStorage[]> {
+        return await this.apiService.invoke('getStoredValue', STORAGE_RECENT_SEARCHES_KEY);
     }
 
     private saveSearchValue(searchValue: string): void {
@@ -85,7 +103,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             recentSearches.pop();
         }
         recentSearches.unshift({ search: searchValue });
-        this.storageService.set(STORAGE_RECENT_SEARCHES_KEY, recentSearches);
+        this.apiService.invoke('setStoredValue', { key: STORAGE_RECENT_SEARCHES_KEY, value: recentSearches })
+            .then(() => {} // Do nothing
+            ).catch((error: any) => this.displayError(error));
+    }
+
+    private displayError(error: any): void {
+        this.toastRef.current?.show({ severity:'error', summary: 'Error', detail: `${error}`, life: 3000 });
     }
 
     private search(searchValue: string): void {
@@ -130,6 +154,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         );
         return (
             <div className="search-bar">
+                <Toast ref={this.toastRef} />
                 <Toolbar left={leftContents} />
                 <OverlayPanel ref={this.overtlayPanelRef} showCloseIcon={false} id="overlay_panel" style={{width: '450px'}} 
                     className="overlaypanel-recent-searches">

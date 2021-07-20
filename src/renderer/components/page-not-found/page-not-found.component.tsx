@@ -6,8 +6,9 @@
  *      - "Button": a button to go to the home page.
  */
 
+import * as React from 'react';
+import { ReactElement } from 'react';
 import { Button } from 'primereact/button';
-import React, { ReactElement } from 'react';
 import './page-not-found.component.scss';
 
 export interface PageNotFoundProps {

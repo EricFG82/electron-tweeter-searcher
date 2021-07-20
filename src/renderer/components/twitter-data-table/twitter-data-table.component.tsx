@@ -7,11 +7,12 @@
  *      - "DataTable": data table to display the list of results (tweets) of a performed search. 
  */
 
-import React, { ReactElement } from 'react';
+import * as React from 'react';
+import { ReactElement } from 'react';
 import { DataTable } from 'primereact/datatable';
-import { StatusDTO, TWITTER_REST_DATE_FORMAT } from '../../models/twitter.model';
+import { StatusDTO, TWITTER_REST_DATE_FORMAT } from '_/models/twitter.model';
 import { Column } from 'primereact/column';
-import moment from 'moment';
+import * as moment from 'moment';
 import './twitter-data-table.component.scss';
 
 export interface TwitterDataTableProps {

@@ -9,14 +9,10 @@
  */
 
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { OAuth2TokenRespDTO, SearchTweetsRespDTO } from '../models/twitter.model';
+import { OAuth2TokenRespDTO, SearchTweetsRespDTO } from '../../models/twitter.model';
 import { StorageService } from './storage.service';
 
-// Used a bridge as Twitter's API does not support CORS. 
-// That means requests will only work if made from server-side, not from the browser.
-const CORS_BRIDGE_URL = 'https://cors.bridged.cc';
-const TWITTER_API_URL = 'https://api.twitter.com';
-const API_URL = `${CORS_BRIDGE_URL}/${TWITTER_API_URL}`;
+const API_URL = 'https://api.twitter.com';
 
 // Twitter Developer portal constants
 // Url: https://developer.twitter.com/en/portal/dashboard
@@ -109,7 +105,7 @@ export class TwitterService {
      */ 
     private getOAuth2BearerToken(): Promise<string> {
         return new Promise<string>(async (resolve: any, reject: any) => {
-            let bearerToken: string | null = this.storageService.get(ACCESSTOKEN_STORAGE_KEY);
+            let bearerToken: string | undefined | null = this.storageService.get(ACCESSTOKEN_STORAGE_KEY);
             if (bearerToken) {
                 resolve(bearerToken);
             } else {

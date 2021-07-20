@@ -7,21 +7,20 @@
  *      - "Toast": A message panel to show errors of the search.
  */
 
-import React, { ReactElement } from 'react';
+import * as React from 'react';
+import { ReactElement } from 'react';
 import { Toast } from 'primereact/toast';
-import { SearchTweetsRespDTO, StatusDTO } from '../../models/twitter.model';
-import { StorageService } from '../../services/storage.service';
-import { TwitterService } from '../../services/twitter.service';
 import { SearchBar, SearchBarSearchClickEvent } from '../search-bar/search-bar.component';
 import { TwitterDataTable } from '../twitter-data-table/twitter-data-table.component';
 import './twitter-searcher.component.scss';
+import { SearchTweetsRespDTO, StatusDTO } from '_/models/twitter.model';
+import { ApiService } from '_/renderer/services/api.service';
 
 // Constants of the component
 const TOTAL_TWEETS_TO_SEARCH = 30;
 
 export interface TwitterSearcherProps {
-    storageService: StorageService;
-    twitterService: TwitterService;
+    apiService: ApiService;
 }
 
 interface TwitterSearcherState {
@@ -29,17 +28,16 @@ interface TwitterSearcherState {
 
 export class TwitterSearcher extends React.Component<TwitterSearcherProps, TwitterSearcherState> {
 
-    private storageService: StorageService;
-    private twitterService: TwitterService;
+    private apiService: ApiService;
+    
     private searchBarRef: React.RefObject<SearchBar>;
     private datatableRef: React.RefObject<TwitterDataTable>;
     private toastRef: React.RefObject<Toast>;
 
     constructor (props: any) {
         super(props);
-        
-        this.storageService = this.props.storageService;
-        this.twitterService = this.props.twitterService;
+
+        this.apiService = props.apiService;
 
         this.datatableRef = React.createRef<TwitterDataTable>();
         this.searchBarRef = React.createRef<SearchBar>();
@@ -63,7 +61,7 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
             this.datatableRef.current?.setState({ loading: true });
 
             // Search tweets by using the Twitter REST API
-            const searchResp: SearchTweetsRespDTO = await this.twitterService.searchTweets(searchValue, TOTAL_TWEETS_TO_SEARCH);
+            const searchResp: SearchTweetsRespDTO = await this.apiService.invoke('searchTweets', { query: searchValue, count: TOTAL_TWEETS_TO_SEARCH });
 
             tweets = searchResp.statuses;
 
@@ -80,7 +78,7 @@ export class TwitterSearcher extends React.Component<TwitterSearcherProps, Twitt
         return (
             <div className="tweets-searcher">
                 <Toast ref={this.toastRef} />
-                <SearchBar storageService={this.storageService} onSearchClick={this.onSearchClickEv} ref={this.searchBarRef}></SearchBar>
+                <SearchBar apiService={this.apiService} onSearchClick={this.onSearchClickEv} ref={this.searchBarRef}></SearchBar>
                 <TwitterDataTable ref={this.datatableRef}></TwitterDataTable>
             </div>
         );

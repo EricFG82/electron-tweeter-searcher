@@ -5,7 +5,7 @@ Project is done using following technologies:
 * [Nodejs](https://nodejs.org/) 
 * [React](https://reactjs.org/)
 * [Electron](https://www.electronjs.org/)
-* [Parcel](https://parceljs.org/)
+* [WebpackJS](https://webpack.js.org/)
 
 ## Usage of the application
 The application allows you to do general searches or search for content of an specific user.
@@ -45,6 +45,8 @@ You must create an .env file on the root path of the project and specify followi
 * TWITTER_API_KEY=**YOUR_API_KEY**
 * TWITTER_API_SECRET_KEY=**YOUR_API_SECRET_KEY**
 
+See the sample file ".env.example" for more details.
+
 ## Start the application in development mode
 ### Start the project as an Electron application:
 * On the command line, run: ``` npm start ```
@@ -54,21 +56,36 @@ You must create an .env file on the root path of the project and specify followi
 
 ## Package the application
 ### Package the project as an Electron application:
-* On the command line, run: ``` npm run build ```
-
-### Package the project as a web page:
-* On the command line, run: ``` npm run standalone-build ```
+* On the command line, execute: 
+```sh
+npm run prod
+npm run build 
+```
+* For macOS only, on the command line, execute:
+```sh
+npm run prod
+npm run build:mac
+```
+* For Windows only, on the command line, execute:
+```sh
+npm run prod
+npm run build:win
+```
 
 ## Structure of the source code
 Path                       | Description
 -------------------------- | -------
 /                          | Root path. Here are the project configuration files.
+/docs/                     | The documentation files are located here.
 /public/                   | Public folder. Here are the public files such as index.html, favicon.ico.
-/src/                      | The main application source files are located here.
-/src/components            | Here are the source files to define the components.
+/src/                      | The source files are located here.
+/src/main                  | The main application source files are located here.
+/src/main/services         | Here are the source files to define the services of the main application.
+/src/renderer              | The renderer application source files are located here.
+/src/renderer/components   | Here are the source files to define the components of the renderer application.
+/src/renderer/services     | Here are the source files to define the services of the main application.
 /src/models                | Here are the source files to define the data Transfer Objects (DTO).
-/src/services              | Here are the source files to define the services.
 /dist                      | Here are the compiled files prepared for distribution.
 
 ## Common errors
-In case you get an "HTTP 403 Unauthorized" error when searching for tweets from the application, make sure the ``` .env ``` file exists and its content is correct. If this is not the case, add the file with the data, delete the cache folder ".cache" and run the command again. For example: ``` npm start ```. 
+In case you get an "HTTP 403 Unauthorized" error when searching for tweets from the application, make sure the ``` .env ``` file exists and its content is correct. If this is not the case, add the file with the data and run the command again. For example: ``` npm start ```. 

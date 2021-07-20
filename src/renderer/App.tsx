@@ -6,12 +6,12 @@
  * by using a routing mechanism. 
  */
 
-import React, { ReactElement } from 'react';
-import { Switch, Route, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import * as React from 'react';
+import { ReactElement } from 'react';
+import { Route, Redirect, RouteComponentProps, withRouter, HashRouter, Switch } from 'react-router-dom';
 import { TwitterSearcher } from './components/twitter-searcher/twitter-searcher.component';
 import { PageNotFound } from './components/page-not-found/page-not-found.component';
-import { TwitterService } from './services/twitter.service';
-import { StorageService } from './services/storage.service';
+import { ApiService } from './services/api.service';
 import './App.scss';
 
 interface AppProps extends RouteComponentProps {
@@ -22,23 +22,28 @@ interface AppState {
 
 class App extends React.Component<AppProps, AppState> {
 
-    private storageService: StorageService;
-    private twitterService: TwitterService;
+    private apiService: ApiService;
 
     constructor (props: AppProps) {
         super(props);
-        this.storageService = new StorageService();
-        this.twitterService = new TwitterService(this.storageService);
+
+        this.apiService = new ApiService();
+
+        this.goToHomePath();
     }
 
-    goToPath(path: string): void {
+    private goToPath(path: string): void {
         const { history, location } = this.props;
         let { from } = location.state || { from: { pathname: path } } as any;
         history.replace(from);
     }
 
-    onGotToHomeClick = (): void => {
+    private goToHomePath() {
         this.goToPath('/');
+    }
+
+    private onGotToHomeClick = (): void => {
+        this.goToHomePath();
     }
 
     render(): ReactElement {
@@ -49,7 +54,7 @@ class App extends React.Component<AppProps, AppState> {
                         <Redirect to="/searcher" />
                     </Route>
                     <Route path="/searcher">
-                        <TwitterSearcher storageService={this.storageService} twitterService={this.twitterService}></TwitterSearcher>
+                        <TwitterSearcher apiService={this.apiService}></TwitterSearcher>
                     </Route>
                     <Route path="*">
                         <PageNotFound onGotToHomeClick={this.onGotToHomeClick}></PageNotFound>
