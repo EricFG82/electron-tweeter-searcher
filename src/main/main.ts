@@ -7,6 +7,8 @@ import * as url from 'url';
 import { BrowserWindow, app, ipcMain } from 'electron';
 import { TwitterService } from './services/twitter.service';
 import { StorageService } from './services/storage.service';
+import { RecentSearchStorageDTO } from '_/models/storage.model';
+import { SearchTweetsQueryDTO } from '_/models/twitter.model';
 
 const isProd = process.env.NODE_ENV === 'production';
 let mainWindow: Electron.BrowserWindow | null;
@@ -24,7 +26,6 @@ function createWindow(): void {
      * renderer page. For instance: import { ipcRenderer } from 'electron';
      */
     // webPreferences: {
-    //   webSecurity: false,
     //   devTools: !isProd,
     //   nodeIntegration: true
     // }
@@ -94,21 +95,16 @@ const storageService: StorageService = new StorageService();
 const twitterService: TwitterService = new TwitterService(storageService);
 
 // Handle to search and return tweets in the main process
-ipcMain.handle('searchTweets', async (event: any, queryData: any) => {
+ipcMain.handle('searchTweets', async (event: any, queryData: SearchTweetsQueryDTO) => {
   return await twitterService.searchTweets(queryData.query, queryData.count);
 });
 
-// Handle to return the stored value in the main process
-ipcMain.handle('getStoredValue', (event: any, key: string) => {
-	return storageService.get(key);
+// Handle to return the stored recent searches in the main process
+ipcMain.handle('getRecentSearches', (event: any, args: any) => {
+	return storageService.get('TWITTER_RECENT_SEARCHES');
 });
 
-// Handle to save a value on the storage in the main process
-ipcMain.handle('setStoredValue', (event, storageData) => {
-	storageService.set(storageData.key, storageData.value);
-});
-
-// Handle to remove a stored value in the main process
-ipcMain.handle('removeStoredValue', (event: any, key: string) => {
-	storageService.remove(key);
+// Handle to save recent searches on the storage in the main process
+ipcMain.handle('setRecentSearches', (event: any, storageData: RecentSearchStorageDTO[]) => {
+	storageService.set('TWITTER_RECENT_SEARCHES', storageData);
 });

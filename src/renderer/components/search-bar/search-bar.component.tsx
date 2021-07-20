@@ -17,42 +17,36 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { ListBox, ListBoxChangeParams } from 'primereact/listbox';
-import './search-bar.component.scss';
-import { ApiService } from '_/renderer/services/api.service';
 import { Toast } from 'primereact/toast';
+import { SearchesStorageApiService } from '_/renderer/services/searches-storage-api.service';
+import { RecentSearchStorageDTO } from '_/models/storage.model';
+import './search-bar.component.scss';
 
 export interface SearchBarSearchClickEvent extends Event {
     searchValue: string; 
 }
 
 export interface SearchBarProps {
-    apiService: ApiService;
+    searchesStorageApiService: SearchesStorageApiService;
     onSearchClick?: (event: SearchBarSearchClickEvent) => void;
 }
 
 interface SearchBarState {
     searchValue: string;
     loading: boolean;
-    recentSearches: RecentSearchStorage[];
+    recentSearches: RecentSearchStorageDTO[];
 }
-
-interface RecentSearchStorage {
-    search: string;
-}
-
-// Constants of the component
-const STORAGE_RECENT_SEARCHES_KEY = 'TWITTER_RECENT_SEARCHES';
 
 export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
-    private apiService: ApiService;
+    private searchesStorageApiService: SearchesStorageApiService;
     private overtlayPanelRef: React.RefObject<OverlayPanel>;
     private toastRef: React.RefObject<Toast>;
 
     constructor (props: any) {
         super(props);
 
-        this.apiService = props.apiService;
+        this.searchesStorageApiService = props.searchesStorageApiService;
         this.overtlayPanelRef = React.createRef<OverlayPanel>();
         this.toastRef = React.createRef<Toast>();
 
@@ -61,14 +55,8 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
     async componentDidMount() {
         try {
-            let data: RecentSearchStorage[] = await this.loadRecentSearches();
-
-            data = (data ? data : []);
-            if (typeof data == 'string') {
-                data = JSON.parse(data);
-            }
+            const data: RecentSearchStorageDTO[] = await this.searchesStorageApiService.loadRecentSearches();
             this.setState({ recentSearches: data });
-
         } catch (error: any) {
             this.displayError(error);
         }
@@ -93,17 +81,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         }
     }
 
-    private async loadRecentSearches(): Promise<RecentSearchStorage[]> {
-        return await this.apiService.invoke('getStoredValue', STORAGE_RECENT_SEARCHES_KEY);
-    }
-
     private saveSearchValue(searchValue: string): void {
         const { recentSearches } = this.state;
         while (recentSearches.length >= 5) {
             recentSearches.pop();
         }
         recentSearches.unshift({ search: searchValue });
-        this.apiService.invoke('setStoredValue', { key: STORAGE_RECENT_SEARCHES_KEY, value: recentSearches })
+        this.searchesStorageApiService.setRecentSearches(recentSearches)
             .then(() => {} // Do nothing
             ).catch((error: any) => this.displayError(error));
     }

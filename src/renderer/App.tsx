@@ -8,10 +8,11 @@
 
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { Route, Redirect, RouteComponentProps, withRouter, HashRouter, Switch } from 'react-router-dom';
+import { Route, Redirect, RouteComponentProps, withRouter, Switch } from 'react-router-dom';
 import { TwitterSearcher } from './components/twitter-searcher/twitter-searcher.component';
 import { PageNotFound } from './components/page-not-found/page-not-found.component';
-import { ApiService } from './services/api.service';
+import { TwitterApiService } from './services/twitter-api.service';
+import { SearchesStorageApiService } from './services/searches-storage-api.service';
 import './App.scss';
 
 interface AppProps extends RouteComponentProps {
@@ -22,12 +23,14 @@ interface AppState {
 
 class App extends React.Component<AppProps, AppState> {
 
-    private apiService: ApiService;
+    private twitterApiService: TwitterApiService;
+    private searchesStorageApiService: SearchesStorageApiService;
 
     constructor (props: AppProps) {
         super(props);
 
-        this.apiService = new ApiService();
+        this.twitterApiService = new TwitterApiService();
+        this.searchesStorageApiService = new SearchesStorageApiService();
 
         this.goToHomePath();
     }
@@ -54,7 +57,7 @@ class App extends React.Component<AppProps, AppState> {
                         <Redirect to="/searcher" />
                     </Route>
                     <Route path="/searcher">
-                        <TwitterSearcher apiService={this.apiService}></TwitterSearcher>
+                        <TwitterSearcher twitterApiService={this.twitterApiService}  searchesStorageApiService={this.searchesStorageApiService}></TwitterSearcher>
                     </Route>
                     <Route path="*">
                         <PageNotFound onGotToHomeClick={this.onGotToHomeClick}></PageNotFound>

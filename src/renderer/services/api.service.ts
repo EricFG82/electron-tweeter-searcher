@@ -1,3 +1,14 @@
+/**
+ * IPC Electron service base
+ * 
+ * Used to call exposed methods of Electron ipcRenderer.
+ * Done in that way for security reasons.
+ * 
+ * See for more details comments of files: 
+ * /src/main/main.ts
+ * /src/electron.preload.js
+ */
+
 interface Api {
     invoke(channel: string, data: any): Promise<any>;
     sendSync(channel: string, data: any): any;
@@ -13,19 +24,19 @@ export class ApiService {
         this.api = (window as any).api;
     }
 
-    invoke(channel: string, data: any): Promise<any> {
+    protected invoke(channel: string, data: any): Promise<any> {
         return this.api.invoke(channel, data);
     }
 
-    sendSync(channel: string, data: any): any {
+    protected sendSync(channel: string, data: any): any {
         return this.api.sendSync(channel, data);
     }
 
-    send(channel: string, data: any): void {
+    protected send(channel: string, data: any): void {
         this.api.send(channel, data);
     }
 
-    receive(channel: string, data: any): void {
+    protected receive(channel: string, data: any): void {
         this.api.receive(channel, data);
     }
 

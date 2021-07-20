@@ -168,3 +168,8 @@ export interface OAuth2TokenRespDTO {
     token_type: string;
     access_token: string;
 }
+
+export interface SearchTweetsQueryDTO { 
+    query: string; 
+    count: number;
+}
