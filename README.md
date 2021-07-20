@@ -51,9 +51,6 @@ See the sample file ".env.example" for more details.
 ### Start the project as an Electron application:
 * On the command line, run: ``` npm start ```
 
-### Start the project as a web page:
-* On the command line, run: ``` npm run standalone-start ```
-
 ## Package the application
 ### Package the project as an Electron application:
 * On the command line, execute: 
